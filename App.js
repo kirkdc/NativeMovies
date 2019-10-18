@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Navigation from './Navigation';
-// import {Provider} from 'react-redux';
-// import store from './store';
+import {Provider} from 'react-redux';
+import store from './store';
 
 export default class App extends React.Component {
   render() {
     return (
-      // <Provider store={store}>
+      <Provider store={store}>
       <Navigation />
-      // <Text> Movies Here</Text>
-      // </Provider>
+      </Provider>
     );
   }
 }
