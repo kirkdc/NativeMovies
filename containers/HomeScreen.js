@@ -7,9 +7,10 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
-import { fetchMovies } from '../Redux/actions'
-import { connect } from 'react-redux'
+import {fetchMovies} from '../Redux/actions';
+import {connect} from 'react-redux';
 
 const apiKey = '4c53c4a41e79851aed7a70a5c9e19e9a';
 const TrendingUriWeek =
@@ -27,81 +28,91 @@ class HomeScreen extends Component {
     };
   }
 
-  componentDidMount  = () => {
+  componentDidMount = () => {
     console.log(this.props);
     this.props.fetchMovies();
-  }
+  };
 
-  onClickMovie = (movie) => {
-    console.log(movie, "from HomeScreen");
-    this.props.navigation.navigate('MoviesDetail', { movieId: movie.id });
-  }
+  onClickMovie = movie => {
+    console.log(movie, 'from HomeScreen');
+    // this.props.navigation.navigate('MoviesDetail', { movieId: movie.id });
+    this.props.navigation.navigate('MoviesDetail', {
+      movieId: movie.id,
+      movieTitle: movie.original_title,
+      movieDesc: movie.overview,
+      movieBack: movie.backdrop_path,
+    });
+  };
 
   render() {
     const {isLoading} = this.state;
     const data = this.props.trendingMovies;
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}> Top Rated Movies this Week </Text>
-        </View>
+      <SafeAreaView style={styles.safeAreaView}>
+        <ScrollView style={styles.container}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}> Top Rated Movies this Week </Text>
+          </View>
 
-        <View style={styles.movieContainer}>
-          {data.length > 0 ? (
-            data.map(movie => {
-              return (
-                <View style={styles.movieCard}>
-                  <TouchableOpacity
-                  activeOpacity={0.6}
-                    onPress={()=> this.onClickMovie(movie)}>
-                    <Image
-                      style={styles.imageStyle}
-                      resizeMode="contain"
-                      source={{
-                        uri:
-                          'https://image.tmdb.org/t/p/w200' + movie.poster_path,
-                      }}
-                    />
-                  </TouchableOpacity>
-                  <Text style={styles.movieName} >
-                  Movie List
-                  </Text>
-                </View>
-              );
-            })
-          ) : (
-            <Text> Network Error </Text>
-          )}
-        </View>
-      </ScrollView>
+          <View style={styles.movieContainer}>
+            {data.length > 0 ? (
+              data.map(movie => {
+                return (
+                  <View key={movie.id} style={styles.movieCard}>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={() => this.onClickMovie(movie)}>
+                      <Image key={movie.id}
+                        style={styles.imageStyle}
+                        resizeMode="contain"
+                        source={{
+                          uri:
+                            'https://image.tmdb.org/t/p/w200' +
+                            movie.poster_path,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <Text key={movie.id} style={styles.movieName}>{movie.original_title}</Text>
+                  </View>
+                );
+              })
+            ) : (
+              <Text> Network Error </Text>
+            )}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
 
-const  mapStateToProps = (state) => {
-  console.log(state, "store state");
+const mapStateToProps = state => {
   return {
-      trendingMovies: state.trendingMovies,
-  }
-}
+    trendingMovies: state.trendingMovies,
+  };
+};
 
-export default connect(mapStateToProps, {fetchMovies})(HomeScreen);
-
+export default connect(
+  mapStateToProps,
+  {fetchMovies},
+)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'yellow',
+    backgroundColor: 'black',
   },
   movieName: {
-    color: 'red',
+    color: 'black',
     fontSize: 20,
+    fontWeight: 'bold',
     paddingBottom: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerContainer: {
     backgroundColor: 'brown',
+    alignItems: 'center',
   },
   headerText: {
     color: 'white',
@@ -114,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   movieCard: {
-    backgroundColor: '#fff',
+    backgroundColor: 'grey',
     width: '80%',
     bottom: 10,
     alignItems: 'center',
@@ -126,5 +137,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
   },
-
+  safeAreaView: {
+    flex: 1,
+  },
 });
