@@ -12,25 +12,32 @@ import {
 
 import {searchMovies} from '../Redux/actions';
 import {connect} from 'react-redux';
+import MovieCard from '../components/MovieCard';
 
 class MovieSearchScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {userInput: ''};
+    this.state = {userInput: '',
+  data:[]};
   }
 
-  componentDidMount = () => {
-    console.log(this.props);
-    this.props.searchMovies();
-  };
+  // componentDidMount = () => {
+  //   console.log(this.props);
+  //   this.props.searchMovies(this.state.userInput);
+  // };
+  //^Remove this ^
+
+  handleSubmit = () => {
+  this.props.searchMovies(this.state.userInput);
+  }
 
 
   render() {
-    const data = this.props.searchedMovies
-    console.log(this.state.userInput)
+    console.log(this.props.userSearchResults)
+    const data = this.props.userSearchResults;
     return (
       <SafeAreaView style={styles.safeAreaView}>
-        <ScrollView style={styles.container}>
+
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>
               Search for your favourite movies
@@ -43,8 +50,26 @@ class MovieSearchScreen extends Component {
               onChangeText={userInput => this.setState({userInput})}
               value={this.state.userInput}
             />
+            <Button title={"Search"} onPress={this.handleSubmit}  />
           </View>
-        </ScrollView>
+          <ScrollView style={styles.container}>
+          <View style={styles.movieContainer}>
+            {data.length > 0 ? (
+              data.map(movie => {
+                return (
+                  <MovieCard
+                  key={movie.id}
+                  navigation={this.props.navigation}
+                  movie={movie}
+                />
+                );
+              })
+            ) : (
+              <Text> Network Error </Text>
+            )}
+          </View>
+          </ScrollView>
+
       </SafeAreaView>
     );
   }
@@ -52,7 +77,7 @@ class MovieSearchScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    searchMovies: state.searchMovies,
+    userSearchResults: state.searchMovies,
   };
 };
 
@@ -79,5 +104,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
-
+  movieContainer: {
+    paddingTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

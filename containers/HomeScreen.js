@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {fetchMovies} from '../Redux/actions';
 import {connect} from 'react-redux';
+import MovieCard from '../components/MovieCard';
 
 const apiKey = '4c53c4a41e79851aed7a70a5c9e19e9a';
 const TrendingUriWeek =
@@ -33,17 +34,6 @@ class HomeScreen extends Component {
     this.props.fetchMovies();
   };
 
-  onClickMovie = movie => {
-    console.log(movie, 'from HomeScreen');
-    // this.props.navigation.navigate('MoviesDetail', { movieId: movie.id });
-    this.props.navigation.navigate('MoviesDetail', {
-      movieId: movie.id,
-      movieTitle: movie.original_title,
-      movieDesc: movie.overview,
-      movieBack: movie.backdrop_path,
-    });
-  };
-
   render() {
     const {isLoading} = this.state;
     const data = this.props.trendingMovies;
@@ -58,22 +48,11 @@ class HomeScreen extends Component {
             {data.length > 0 ? (
               data.map(movie => {
                 return (
-                  <View key={movie.id} style={styles.movieCard}>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
-                      onPress={() => this.onClickMovie(movie)}>
-                      <Image key={movie.id}
-                        style={styles.imageStyle}
-                        resizeMode="contain"
-                        source={{
-                          uri:
-                            'https://image.tmdb.org/t/p/w200' +
-                            movie.poster_path,
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <Text key={movie.id} style={styles.movieName}>{movie.original_title}</Text>
-                  </View>
+                  <MovieCard
+                    key={movie.id}
+                    navigation={this.props.navigation}
+                    movie={movie}
+                  />
                 );
               })
             ) : (
