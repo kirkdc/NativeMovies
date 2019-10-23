@@ -1,13 +1,18 @@
-// import jsonPlaceholder from '../../apis';
-
-
 import axios from 'axios';
+
+
+let today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0');
+let yyyy = today.getFullYear();
+
+today = yyyy + "-" + mm + "-" + dd
 
   export const fetchMovies = () => async (dispatch) => {
     const response = await axios.get(
       'https://api.themoviedb.org/3/trending/all/week?api_key=4c53c4a41e79851aed7a70a5c9e19e9a',
     );
-    console.log(response);
+    console.log(response, "fetchMovies redux/actions/index.js");
 
     dispatch({type: 'FETCH_MOVIES', payload: response.data.results});
   };
@@ -18,12 +23,20 @@ import axios from 'axios';
       'https://api.themoviedb.org/3/search/movie?api_key=4c53c4a41e79851aed7a70a5c9e19e9a',{
         params: {query: term},
       }
-      // 'https://api.themoviedb.org/3/search/company?api_key=4c53c4a41e79851aed7a70a5c9e19e9a&query={insert user query here}&page=1'
     );
-    console.log(response, 'User Search Action');
+    console.log(response, 'searchMovies redux/actions/index.js');
 
     dispatch({type: 'SEARCH_MOVIES', payload: response.data.results});
   };
-  // axios.create({
-  //   baseUrl: "https://api.themoviedb.org"
-  // });
+
+
+export const showingNow = () => async (dispatch) => {
+  const response = await axios.get(
+    'https://api.themoviedb.org/3/discover/movie?api_key=4c53c4a41e79851aed7a70a5c9e19e9a&primary_release_date.gte=' + today + '&primary_release_date.lte=' + today,
+  );
+  console.log(response),  "showingNow redux/actions/index.js";
+
+  dispatch({type: 'SHOWING_NOW', payload: response.data.results});
+};
+  // https://api.themoviedb.org/3/discover/movie?api_key=4c53c4a41e79851aed7a70a5c9e19e9a&primary_release_date.gte=2018-10-10&primary_release_date.lte=2018-10-23
+

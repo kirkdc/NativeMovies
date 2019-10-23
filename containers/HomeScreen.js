@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import {fetchMovies} from '../Redux/actions';
+import {fetchMovies, showingNow} from '../Redux/actions';
 import {connect} from 'react-redux';
 import MovieCard from '../components/MovieCard';
 
@@ -29,37 +29,84 @@ class HomeScreen extends Component {
     };
   }
 
+  onSeeMore = () => {
+    console.log(this.props)
+    const {navigation} = this.props;
+   navigation.navigate('TopRated', {
+      movieId: "null",
+    });
+  };
+
   componentDidMount = () => {
-    console.log(this.props);
+    console.log(this.props, 'Home Screen - ComponentDidMount');
     this.props.fetchMovies();
+    this.props.showingNow();
   };
 
   render() {
     const {isLoading} = this.state;
     const data = this.props.trendingMovies;
+    const nowPlaying = this.props.showingMovies;
+    console.log(this.props.trendingMovies, 'render trending');
+    console.log(this.props.showingMovies, 'render showing');
+
     return (
       <SafeAreaView style={styles.safeAreaView}>
-        <ScrollView style={styles.container}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.headerText}> Top Rated Movies this Week </Text>
-          </View>
+        <View style={styles.mainContainer}>
+          <ScrollView>
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerText}>
+                Top Rated Movies
+              </Text>
+              <TouchableOpacity style={styles.button} onPress={this.onSeeMore}>
+                <Text style={styles.buttonText}> See More </Text>
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.movieContainer}>
-            {data.length > 0 ? (
-              data.map(movie => {
-                return (
-                  <MovieCard
-                    key={movie.id}
-                    navigation={this.props.navigation}
-                    movie={movie}
-                  />
-                );
-              })
-            ) : (
-              <Text> Network Error </Text>
-            )}
-          </View>
-        </ScrollView>
+            <View style={styles.movieContainer}>
+              <ScrollView horizontal={true}>
+                {data.length > 0 ? (
+                  data.map(movie => {
+                    return (
+                      <MovieCard
+                        key={movie.id}
+                        navigation={this.props.navigation}
+                        movie={movie}
+                      />
+                    );
+                  })
+                ) : (
+                  <Text> Network Error </Text>
+                )}
+              </ScrollView>
+            </View>
+
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerText}> Now Playing </Text>
+              <TouchableOpacity style={styles.button} onPress={this.onPress}>
+                <Text style={styles.buttonText}> See More </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.movieContainer}>
+              <ScrollView horizontal={true}>
+                {nowPlaying.length > 0 ? (
+                  nowPlaying.map(movie => {
+                    return (
+                      <MovieCard
+                        key={movie.id}
+                        navigation={this.props.navigation}
+                        movie={movie}
+                      />
+                    );
+                  })
+                ) : (
+                  <Text> Network Error </Text>
+                )}
+              </ScrollView>
+            </View>
+          </ScrollView>
+        </View>
       </SafeAreaView>
     );
   }
@@ -68,12 +115,13 @@ class HomeScreen extends Component {
 const mapStateToProps = state => {
   return {
     trendingMovies: state.trendingMovies,
+    showingMovies: state.showingMovies,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {fetchMovies},
+  {fetchMovies, showingNow},
 )(HomeScreen);
 
 const styles = StyleSheet.create({
@@ -81,40 +129,47 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
   movieName: {
     color: 'black',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 30,
     paddingBottom: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerContainer: {
-    backgroundColor: 'brown',
-    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: 'rgb(13, 13, 13)',
+    marginTop: 30,
   },
   headerText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 22,
+    alignItems: 'flex-start',
+    paddingLeft: 8,
+  },
+  button: {
+    backgroundColor: "transparent",
+    alignContent:"flex-end",
+    alignItems: 'flex-end',
+    alignSelf:"flex-end",
+    justifyContent: "flex-end",
+    padding: 4,
+    // marginLeft: "30%"
+  },
+  buttonText:{
+    color: "rgb(0, 153, 255)",
+    fontSize: 20
   },
   movieContainer: {
     paddingTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  movieCard: {
-    backgroundColor: 'grey',
-    width: '80%',
-    bottom: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  imageStyle: {
-    width: 200,
-    height: 300,
-    borderColor: 'black',
-    borderWidth: 2,
+    backgroundColor: 'rgb(13, 13, 13)',
   },
   safeAreaView: {
     flex: 1,

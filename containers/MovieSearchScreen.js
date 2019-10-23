@@ -21,20 +21,14 @@ class MovieSearchScreen extends Component {
   data:[]};
   }
 
-  // componentDidMount = () => {
-  //   console.log(this.props);
-  //   this.props.searchMovies(this.state.userInput);
-  // };
-  //^Remove this ^
-
   handleSubmit = () => {
   this.props.searchMovies(this.state.userInput);
   }
 
-
   render() {
-    console.log(this.props.userSearchResults)
+    console.log(this.props.userSearchResults, "movieSearchScreen.js")
     const data = this.props.userSearchResults;
+
     return (
       <SafeAreaView style={styles.safeAreaView}>
 

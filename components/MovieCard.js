@@ -26,7 +26,7 @@ const MovieCard = props => {
           }}
         />
       </TouchableOpacity>
-      <Text style={styles.movieName}>{movie.original_title}</Text>
+      <Text style={styles.movieName}>{movie.original_title || movie.name }</Text>
     </View>
   );
 };
@@ -35,19 +35,24 @@ export default MovieCard;
 
 const styles = StyleSheet.create({
   movieName: {
-    color: 'black',
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
     paddingBottom: 20,
+    padding: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
   movieCard: {
-    backgroundColor: 'grey',
-    width: '80%',
+    backgroundColor: 'rgb(38, 38, 38)',
     bottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 15,
+    marginLeft: 15,
+    borderColor: "rgb(13, 13, 13)",
+    borderWidth: 2,
+    width: 250,
   },
   imageStyle: {
     width: 200,

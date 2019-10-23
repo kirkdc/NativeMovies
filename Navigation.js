@@ -8,6 +8,7 @@ import MovieDetailsScreen from './containers/MovieDetails';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import TopRatedScreen from './containers/TopRated';
 
 class Navigation extends Component {
   //API Key for https://www.themoviedb.org/settings/api = 4c53c4a41e79851aed7a70a5c9e19e9a
@@ -35,7 +36,8 @@ const Tabs = createBottomTabNavigator({
 const AppStackNavigation = createStackNavigator(
   {
     'Main': {screen: Tabs},
-    'MoviesDetail': { screen: MovieDetailsScreen }
+    'MoviesDetail': { screen: MovieDetailsScreen },
+    'TopRated': {screen: TopRatedScreen},
   },
   {
     initialRouteName: 'Main',
