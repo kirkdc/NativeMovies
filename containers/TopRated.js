@@ -21,27 +21,32 @@ const TrendingUriDay = 'https://api.themoviedb.org/3/trending/all/day?api_key=';
 const posterUri = 'https://image.tmdb.org/t/p/w200';
 
 class TopRatedScreen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.navProps = this.props.navigation.state.params;
+
     this.state = {
       isLoading: false,
       data: [],
     };
   }
 
-  componentDidMount = () => {
-    console.log(this.props);
-    this.props.fetchMovies();
-  };
+  get data() {
+    return this.navProps.type === 'TOP_RATED' ? this.props.trendingMovies : this.props.showingMovies;
+  }
+
+  get headerText() {
+    return this.navProps.type === 'TOP_RATED' ? 'Top Rated Movies this Week' : 'Now showing Movies';
+  }
 
   render() {
     const {isLoading} = this.state;
-    const data = this.props.trendingMovies;
+    const data = this.data;
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <ScrollView style={styles.container}>
           <View style={styles.headerContainer}>
-            <Text style={styles.headerText}> Top Rated Movies this Week </Text>
+            <Text style={styles.headerText}>{this.headerText}</Text>
           </View>
 
           <View style={styles.movieContainer}>
@@ -68,6 +73,7 @@ class TopRatedScreen extends Component {
 const mapStateToProps = state => {
   return {
     trendingMovies: state.trendingMovies,
+    showingMovies: state.showingMovies,
   };
 };
 

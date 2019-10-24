@@ -29,11 +29,12 @@ class HomeScreen extends Component {
     };
   }
 
-  onSeeMore = () => {
+  onSeeMore = (type) => {
     console.log(this.props)
     const {navigation} = this.props;
    navigation.navigate('TopRated', {
       movieId: "null",
+      type
     });
   };
 
@@ -58,7 +59,7 @@ class HomeScreen extends Component {
               <Text style={styles.headerText}>
                 Top Rated Movies
               </Text>
-              <TouchableOpacity style={styles.button} onPress={this.onSeeMore}>
+              <TouchableOpacity style={styles.button} onPress={() => this.onSeeMore('TOP_RATED')}>
                 <Text style={styles.buttonText}> See More </Text>
               </TouchableOpacity>
             </View>
@@ -83,7 +84,7 @@ class HomeScreen extends Component {
 
             <View style={styles.headerContainer}>
               <Text style={styles.headerText}> Now Playing </Text>
-              <TouchableOpacity style={styles.button} onPress={this.onPress}>
+              <TouchableOpacity style={styles.button} onPress={() => this.onSeeMore('NOW_PLAYING')}>
                 <Text style={styles.buttonText}> See More </Text>
               </TouchableOpacity>
             </View>

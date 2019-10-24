@@ -7,7 +7,7 @@ import AboutScreen from './containers/AboutScreen';
 import MovieDetailsScreen from './containers/MovieDetails';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import TopRatedScreen from './containers/TopRated';
 
 class Navigation extends Component {
@@ -20,30 +20,69 @@ class Navigation extends Component {
 
 export default Navigation;
 
-
-const Tabs = createBottomTabNavigator({
-  Home: {
-    screen: HomeScreen,
-  },
-  Search: {
-    screen: MovieSearchScreen,
-  },
-  About: {
-    screen: AboutScreen,
-  },
-});
-
-const AppStackNavigation = createStackNavigator(
+const Tabs = createMaterialTopTabNavigator(
   {
-    'Main': {screen: Tabs},
-    'MoviesDetail': { screen: MovieDetailsScreen },
-    'TopRated': {screen: TopRatedScreen},
+    Home: {
+      screen: HomeScreen,
+    },
+    Search: {
+      screen: MovieSearchScreen,
+    },
+    About: {
+      screen: AboutScreen,
+    },
   },
   {
-    initialRouteName: 'Main',
-    headerMode: 'none'
+    navigationOptions: {
+      title: 'The Movie DataBase',
+      headerStyle: {
+        backgroundColor: 'rgb(55,55,55)',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+    tabBarOptions: {
+      labelStyle: {
+        fontSize: 16,
+        color: 'white',
+        fontWeight: "bold"
+
+      },
+      tabStyle: {
+        // width: 100,
+      },
+      style: {
+        backgroundColor: 'rgb(38, 38, 38)',
+      },
+    }
   },
 );
 
+const AppStackNavigation = createStackNavigator(
+  {
+    Main: {
+      screen: Tabs
+    },
+    MoviesDetail: {screen: MovieDetailsScreen},
+    TopRated: {screen: TopRatedScreen},
+  },
+  {
+    initialRouteName: 'Main',
+    defaultNavigationOptions: {
+      headerTintColor: '#fff',
+      headerStyle: {
+        backgroundColor: 'black',
+        color: '#fff'
+      },
+    },
+    navigationOptions: (props) => {
+      return {
+        headerLabel: 'Home',
+      }
+    },
+  },
+);
 
 const AppContainer = createAppContainer(AppStackNavigation);
