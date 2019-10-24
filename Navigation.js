@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 
 import HomeScreen from './containers/HomeScreen';
 import MovieSearchScreen from './containers/MovieSearchScreen';
@@ -36,11 +36,21 @@ const Tabs = createMaterialTopTabNavigator(
     navigationOptions: {
       title: 'The Movie DataBase',
       headerStyle: {
-        backgroundColor: 'rgb(55,55,55)',
+        backgroundColor: 'rgb(45,45,45)',
       },
+      headerTitleContainerStyle:{
+        marginLeft: 15,
+      },
+      headerLeft:(
+        <Image
+        style={{width: 45, height: 45, marginLeft: 20, paddingRight: 20}}
+        source={{uri: 'https://www.themoviedb.org/assets/2/v4/logos/208x226-stacked-green-9484383bd9853615c113f020def5cbe27f6d08a84ff834f41371f223ebad4a3c.png'}}
+      />
+      ),
       headerTintColor: '#fff',
       headerTitleStyle: {
         fontWeight: 'bold',
+        fontSize: 25,
       },
     },
     tabBarOptions: {
@@ -71,9 +81,10 @@ const AppStackNavigation = createStackNavigator(
   {
     initialRouteName: 'Main',
     defaultNavigationOptions: {
+      title: "Back to Home",
       headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: 'black',
+        backgroundColor: 'green',
         color: '#fff'
       },
     },

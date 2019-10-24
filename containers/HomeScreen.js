@@ -83,7 +83,7 @@ class HomeScreen extends Component {
             </View>
 
             <View style={styles.headerContainer}>
-              <Text style={styles.headerText}> Now Playing </Text>
+              <Text style={styles.headerText}> New Releases </Text>
               <TouchableOpacity style={styles.button} onPress={() => this.onSeeMore('NOW_PLAYING')}>
                 <Text style={styles.buttonText}> See More </Text>
               </TouchableOpacity>
@@ -151,20 +151,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22,
     alignItems: 'flex-start',
-    paddingLeft: 8,
+    marginLeft: "4%",
   },
   button: {
     backgroundColor: "transparent",
-    alignContent:"flex-end",
-    alignItems: 'flex-end',
-    alignSelf:"flex-end",
+    flex: 1,
+    flexDirection: "row",
     justifyContent: "flex-end",
     padding: 4,
-    // marginLeft: "30%"
+    marginRight: "4%"
   },
   buttonText:{
     color: "rgb(0, 153, 255)",
-    fontSize: 20
+    fontSize: 20,
   },
   movieContainer: {
     paddingTop: 20,

@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import {fetchMovies} from '../Redux/actions';
 import {connect} from 'react-redux';
-import MovieCard from '../components/MovieCard';
+// import MovieCard from '../components/MovieCard';
+import MovieCardHorizon from '../components/MovieCardHorizon';
 
 const apiKey = '4c53c4a41e79851aed7a70a5c9e19e9a';
 const TrendingUriWeek =
@@ -44,16 +45,16 @@ class TopRatedScreen extends Component {
     const data = this.data;
     return (
       <SafeAreaView style={styles.safeAreaView}>
-        <ScrollView style={styles.container}>
-          <View style={styles.headerContainer}>
+        <View style={styles.headerContainer}>
             <Text style={styles.headerText}>{this.headerText}</Text>
           </View>
+        <ScrollView style={styles.container}>
 
           <View style={styles.movieContainer}>
             {data.length > 0 ? (
               data.map(movie => {
                 return (
-                  <MovieCard
+                  <MovieCardHorizon
                     key={movie.id}
                     navigation={this.props.navigation}
                     movie={movie}
@@ -85,7 +86,7 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: 'rgb(30, 30, 30)',
   },
   movieName: {
     color: 'black',
@@ -96,31 +97,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerContainer: {
-    backgroundColor: 'brown',
-    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: 'rgb(13, 13, 13)',
+    // marginTop: 30,
   },
   headerText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 22,
+    alignItems: 'flex-start',
+    marginLeft: "4%",
   },
   movieContainer: {
     paddingTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  movieCard: {
-    backgroundColor: 'grey',
-    width: '80%',
-    bottom: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  imageStyle: {
-    width: 200,
-    height: 300,
-    borderColor: 'black',
-    borderWidth: 2,
   },
   safeAreaView: {
     flex: 1,

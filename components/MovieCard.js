@@ -22,7 +22,8 @@ const MovieCard = props => {
           style={styles.imageStyle}
           resizeMode="contain"
           source={{
-            uri: 'https://image.tmdb.org/t/p/w200' + movie.poster_path,
+            // uri:'https://image.tmdb.org/t/p/w200' + movie.poster_path
+            uri:(movie.poster_path == null) ? 'https://www.accessdisplays.co.uk/wp-content/uploads/2019/04/no-image.png' : 'https://image.tmdb.org/t/p/w200' + movie.poster_path,
           }}
         />
       </TouchableOpacity>
@@ -44,6 +45,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   movieCard: {
+    flex: 1,
+    flexDirection: "column",
     backgroundColor: 'rgb(38, 38, 38)',
     bottom: 10,
     alignItems: 'center',
@@ -52,13 +55,16 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     borderColor: "rgb(13, 13, 13)",
     borderWidth: 2,
-    width: 250,
+    width: 200,
+    height: 400,
+    justifyContent: 'flex-start'
   },
   imageStyle: {
     width: 200,
     height: 300,
     borderColor: 'black',
     borderWidth: 2,
+
   },
   safeAreaView: {
     flex: 1,
