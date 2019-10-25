@@ -22,6 +22,12 @@ const TrendingUriDay = 'https://api.themoviedb.org/3/trending/all/day?api_key=';
 const posterUri = 'https://image.tmdb.org/t/p/w200';
 
 class TopRatedScreen extends Component {
+  static navigationOptions = ({ navigation }) => {
+    console.log(navigation);
+    return {
+      title: navigation.state.params.type === 'TOP_RATED' ? 'Top Rated Movies this Week' : 'Now showing Movies',
+    };
+  };
   constructor(props) {
     super(props);
     this.navProps = this.props.navigation.state.params;
@@ -36,18 +42,12 @@ class TopRatedScreen extends Component {
     return this.navProps.type === 'TOP_RATED' ? this.props.trendingMovies : this.props.showingMovies;
   }
 
-  get headerText() {
-    return this.navProps.type === 'TOP_RATED' ? 'Top Rated Movies this Week' : 'Now showing Movies';
-  }
 
   render() {
     const {isLoading} = this.state;
     const data = this.data;
     return (
       <SafeAreaView style={styles.safeAreaView}>
-        <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>{this.headerText}</Text>
-          </View>
         <ScrollView style={styles.container}>
 
           <View style={styles.movieContainer}>

@@ -87,10 +87,8 @@ const AppStackNavigation = createStackNavigator(
         backgroundColor: 'green',
         color: '#fff'
       },
-    },
-    navigationOptions: (props) => {
-      return {
-        headerLabel: 'Home',
+      navigationOptions: (props) => {
+        console.log(props);
       }
     },
   },
