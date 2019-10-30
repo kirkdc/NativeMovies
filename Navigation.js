@@ -3,12 +3,13 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 
 import HomeScreen from './containers/HomeScreen';
 import MovieSearchScreen from './containers/MovieSearchScreen';
-import AboutScreen from './containers/AboutScreen';
+import FaveScreen from './containers/FaveScreen';
 import MovieDetailsScreen from './containers/MovieDetails';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import TopRatedScreen from './containers/TopRated';
+import GenreScreen from './containers/GenreScreen';
 
 class Navigation extends Component {
   //API Key for https://www.themoviedb.org/settings/api = 4c53c4a41e79851aed7a70a5c9e19e9a
@@ -28,8 +29,8 @@ const Tabs = createMaterialTopTabNavigator(
     Search: {
       screen: MovieSearchScreen,
     },
-    About: {
-      screen: AboutScreen,
+    Favourites: {
+      screen: FaveScreen,
     },
   },
   {
@@ -77,6 +78,7 @@ const AppStackNavigation = createStackNavigator(
     },
     MoviesDetail: {screen: MovieDetailsScreen},
     TopRated: {screen: TopRatedScreen},
+    TopGenre: {screen: GenreScreen}
   },
   {
     initialRouteName: 'Main',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import {MOVIE_CARD_IMG} from '../config';
 
-const genre_ids = [28, 12, 35];
+import {movieByGenre} from '../Redux/actions';
+import {connect} from 'react-redux';
 
 const genres = [
   {
@@ -90,22 +91,34 @@ const genres = [
   },
 ];
 
-const MovieCardHorizon = props => {
-  const {movie, navigation} = props;
+class MovieCardHorizon extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      genreType: '',
+    };
+  }
 
-  let onClickItem = () => {
+   onClickItem = () => {
+     let movie = this.props.movie
     console.log(movie, 'from MovieCardHo');
-    navigation.navigate('MoviesDetail', {
+    this.props.navigation.navigate('MoviesDetail', {
       movieId: movie.id,
       movieTitle: movie.original_title,
       movieDesc: movie.overview,
       movieBack: movie.backdrop_path,
-      movieGenre: genre_ids,
     });
   };
 
+   onClickTab = id => {
+    this.props.navigation.navigate('TopGenre', {
+      genre: 'genre details here',
+    });
+    this.props.movieByGenre(id);
+  };
+
   getFilteredGenres = genreIds => {
-    let filteredGenres = [];
+     let filteredGenres = [];
     genreIds.forEach(id => {
       genres.forEach(genre => {
         if (genre.id === id) {
@@ -120,68 +133,179 @@ const MovieCardHorizon = props => {
     return genres.filter(genre => genre.id === id);
   };
 
-  return (
-    <View style={styles.movieCardHo}>
-      <ImageBackground
-        source={{
-          uri: 'https://image.tmdb.org/t/p/original' + movie.backdrop_path,
-        }}
-        style={{width: '100%', height: '100%'}}>
-        <View style={styles.overlay}>
-          <TouchableOpacity activeOpacity={0.6} onPress={onClickItem}>
-            <Image
-              key={movie.id}
-              style={styles.imageStyle}
-              resizeMode="contain"
-              source={{
-                // uri:'https://image.tmdb.org/t/p/w200' + movie.poster_path
-                uri:
-                  movie.poster_path == null
-                    ? 'https://www.accessdisplays.co.uk/wp-content/uploads/2019/04/no-image.png'
-                    : `https://image.tmdb.org/t/p/w${MOVIE_CARD_IMG.width}${movie.poster_path}`,
-              }}
-            />
-          </TouchableOpacity>
+  render() {
+    // console.log(this.props.topInGenreProp, "reducer props from MovieCardHorizon");
 
-          <View style={styles.detailContainer}>
-            <Text style={styles.movieName}>
-              {movie.original_title || movie.name}
-            </Text>
-            <View style={styles.tagContainer}>
-              {movie.genre_ids.length > 0 ? (
-                this.getFilteredGenres(movie.genre_ids).map(tag => {
-                  return (
-                    <TouchableOpacity
-                      style={styles.tag}
-                      onPress={() => alert('tag clicked')}>
-                      <Text style={styles.tagText}> {tag.name} </Text>
-                    </TouchableOpacity>
-                  );
-                })
-              ) : (
-                <Text> No Tags</Text>
-              )}
-            </View>
+    let movie = this.props.movie
+    return <View style={styles.movieCardHo} key={movie.id}>
+    <ImageBackground
+      source={{
+        uri: 'https://image.tmdb.org/t/p/original' + movie.backdrop_path,
+      }}
+      style={{width: '100%', height: '100%'}}>
+      <View style={styles.overlay}>
+        <TouchableOpacity activeOpacity={0.6} onPress={this.onClickItem}>
+          <Image
+            style={styles.imageStyle}
+            resizeMode="contain"
+            source={{
+              // uri:'https://image.tmdb.org/t/p/w200' + movie.poster_path
+              uri:
+                movie.poster_path == null
+                  ? 'https://www.accessdisplays.co.uk/wp-content/uploads/2019/04/no-image.png'
+                  : `https://image.tmdb.org/t/p/w${MOVIE_CARD_IMG.width}${movie.poster_path}`,
+            }}
+          />
+        </TouchableOpacity>
+
+        <View style={styles.detailContainer}>
+          <Text style={styles.movieName}>
+            {movie.original_title || movie.name}
+          </Text>
+          <View style={styles.tagContainer}>
+            {movie.genre_ids.length > 0 ? (
+              this.getFilteredGenres(movie.genre_ids).map(tag => {
+                return (
+                  <TouchableOpacity
+                    key={tag.id}
+                    style={styles.tag}
+                    // onPress={this.onClickTab}>
+                    onPress={() => this.onClickTab(tag.id)}>
+                    <Text style={styles.tagText}> {tag.name} </Text>
+                  </TouchableOpacity>
+                );
+              })
+            ) : (
+              <Text> No Tags</Text>
+            )}
           </View>
         </View>
-      </ImageBackground>
-    </View>
-  );
+      </View>
+    </ImageBackground>
+  </View>;
+  }
+}
+
+
+const mapStateToProps = state => {
+  return {
+    topInGenreProp: state.topInGenre,
+  };
 };
 
-export default MovieCardHorizon;
+export default connect(
+  mapStateToProps,
+  {movieByGenre},
+)(MovieCardHorizon);
+
+
+//====================================================================================
+// OLD FUNCTIONAL COMPONENT
+//====================================================================================
+
+// const MovieCardHorizon = props => {
+//   const {movie, navigation} = props;
+
+//   let onClickItem = () => {
+//     console.log(movie, 'from MovieCardHo');
+//     navigation.navigate('MoviesDetail', {
+//       movieId: movie.id,
+//       movieTitle: movie.original_title,
+//       movieDesc: movie.overview,
+//       movieBack: movie.backdrop_path,
+//     });
+//   };
+
+//   let onClickTab = () => {
+//     navigation.navigate('TopGenre', {
+//       genre: 'genre details here',
+//     });
+//   };
+
+//   getFilteredGenres = genreIds => {
+//     let filteredGenres = [];
+//     genreIds.forEach(id => {
+//       genres.forEach(genre => {
+//         if (genre.id === id) {
+//           filteredGenres.push(genre);
+//         }
+//       });
+//     });
+//     return filteredGenres;
+//   };
+
+//   getTagName = id => {
+//     return genres.filter(genre => genre.id === id);
+//   };
+
+//   return (
+//     <View style={styles.movieCardHo} key={movie.id}>
+//       <ImageBackground
+//         source={{
+//           uri: 'https://image.tmdb.org/t/p/original' + movie.backdrop_path,
+//         }}
+//         style={{width: '100%', height: '100%'}}>
+//         <View style={styles.overlay}>
+//           <TouchableOpacity activeOpacity={0.6} onPress={onClickItem}>
+//             <Image
+//               style={styles.imageStyle}
+//               resizeMode="contain"
+//               source={{
+//                 // uri:'https://image.tmdb.org/t/p/w200' + movie.poster_path
+//                 uri:
+//                   movie.poster_path == null
+//                     ? 'https://www.accessdisplays.co.uk/wp-content/uploads/2019/04/no-image.png'
+//                     : `https://image.tmdb.org/t/p/w${MOVIE_CARD_IMG.width}${movie.poster_path}`,
+//               }}
+//             />
+//           </TouchableOpacity>
+
+//           <View style={styles.detailContainer}>
+//             <Text style={styles.movieName}>
+//               {movie.original_title || movie.name}
+//             </Text>
+//             <View style={styles.tagContainer}>
+//               {movie.genre_ids.length > 0 ? (
+//                 this.getFilteredGenres(movie.genre_ids).map(tag => {
+//                   return (
+//                     <TouchableOpacity
+//                       key={tag.id}
+//                       style={styles.tag}
+//                       onPress={onClickTab}>
+//                       <Text style={styles.tagText}> {tag.name} </Text>
+//                     </TouchableOpacity>
+//                   );
+//                 })
+//               ) : (
+//                 <Text> No Tags</Text>
+//               )}
+//             </View>
+//           </View>
+//         </View>
+//       </ImageBackground>
+//     </View>
+//   );
+// };
+
+// export default MovieCardHorizon;
+//====================================================================================
+// OLD FUNCTIONAL COMPONENT
+//====================================================================================
 
 const styles = StyleSheet.create({
   movieName: {
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
+    padding: 4,
+    margin: 3,
   },
   movieCardHo: {
     flex: 1,
     backgroundColor: 'rgb(38, 38, 38)',
     borderColor: 'rgb(13, 13, 13)',
     borderWidth: 2,
+    marginTop: 10,
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0,0.7)',

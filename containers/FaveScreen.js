@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Button, Image, ScrollView} from 'react-native';
 
-class AboutScreen extends Component {
+class FaveScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text> All about this app </Text>
+        <Text> All user favourites here </Text>
       </View>
     );
   }
 }
-export default AboutScreen;
+export default FaveScreen;
 
 const styles = StyleSheet.create({
   container: {
