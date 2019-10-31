@@ -15,12 +15,6 @@ import {addFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
 
 class FaveScreen extends Component {
-  // static navigationOptions = ({navigation}) => {
-  //   console.log(navigation);
-  //   return {
-  //     title: `${navigation.state.params.genre.name} Movies`,
-  //   };
-  // };
   constructor(props) {
     super(props);
   }
@@ -31,10 +25,7 @@ class FaveScreen extends Component {
 
   render() {
     const data = this.props.favourites;
-    console.log(this.props.favourites, 'THIS IS THE DATA FROM faveScreen');
     return (
-      // <SafeAreaView style={styles.safeAreaView}>
-      //   <View style={styles.mainContainer}>
       <ScrollView style={styles.container}>
         <View style={styles.movieContainer}>
           {data.length > 0 ? (
@@ -56,13 +47,10 @@ class FaveScreen extends Component {
           )}
         </View>
       </ScrollView>
-      //   </View>
-      // </SafeAreaView>
     );
   }
 }
 const mapStateToProps = state => {
-  console.log(state, "inside favourite");
   return {
     favourites: state.addToFavourites,
   };

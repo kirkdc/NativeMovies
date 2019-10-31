@@ -102,7 +102,6 @@ class MovieCardHorizon extends Component {
 
   onClickItem = () => {
     let movie = this.props.movie;
-    console.log(movie, 'from MovieCardHo');
     this.props.navigation.navigate('MoviesDetail', {
       movieId: movie.id,
       movieTitle: movie.original_title,
@@ -119,9 +118,7 @@ class MovieCardHorizon extends Component {
   };
 
   onClickFavourites = movie => {
-    // console.log(movie);
     this.props.addFavourite(movie);
-    console.log(this.props.favourites, "props from MovieCardHorizon")
   };
 
   getFilteredGenres = genreIds => {
@@ -141,7 +138,6 @@ class MovieCardHorizon extends Component {
   };
 
   render() {
-    // console.log(this.props.topInGenreProp, "reducer props from MovieCardHorizon");
     let movie = this.props.movie;
     return (
       <View style={styles.movieCardHo} key={movie.id}>

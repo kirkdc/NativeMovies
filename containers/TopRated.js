@@ -23,7 +23,6 @@ const posterUri = 'https://image.tmdb.org/t/p/w200';
 
 class TopRatedScreen extends Component {
   static navigationOptions = ({ navigation }) => {
-    console.log(navigation);
     return {
       title: navigation.state.params.type === 'TOP_RATED' ? 'Top Rated Movies this Week' : 'Now showing Movies',
     };

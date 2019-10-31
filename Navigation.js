@@ -91,7 +91,7 @@ const AppStackNavigation = createStackNavigator(
         color: '#fff'
       },
       navigationOptions: (props) => {
-        console.log(props);
+
       }
     },
   },

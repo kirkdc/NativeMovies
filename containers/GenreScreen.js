@@ -15,7 +15,6 @@ import {connect} from 'react-redux';
 
 class GenreScreen extends Component {
   static navigationOptions = ({ navigation }) => {
-    console.log(navigation);
     return {
       title: `${navigation.state.params.genre.name} Movies`,
     };
@@ -30,10 +29,7 @@ class GenreScreen extends Component {
 
   render() {
     const data = this.data;
-    console.log(data, 'THIS IS THE DATA FROM GenreScreen');
     return (
-      // <SafeAreaView style={styles.safeAreaView}>
-      //   <View style={styles.mainContainer}>
           <ScrollView style={styles.container}>
             <View style={styles.movieContainer}>
               {data.length > 0 ? (
@@ -55,8 +51,6 @@ class GenreScreen extends Component {
               )}
             </View>
           </ScrollView>
-      //   </View>
-      // </SafeAreaView>
     );
   }
 }

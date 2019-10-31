@@ -5,7 +5,6 @@ const MovieCard = props => {
   const {movie, navigation} = props;
 
   let onClickItem = () => {
-    console.log(movie, 'from HomeScreen');
    navigation.navigate('MoviesDetail', {
       movieId: movie.id,
       movieTitle: movie.original_title,

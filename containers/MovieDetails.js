@@ -18,7 +18,6 @@ class MovieDetailsScreen extends Component {
   };
 
   render() {
-    console.log(this.props.navigation, 'From Movie Details');
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <ImageBackground
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: "5%",
-    // paddingTop: "30%"
   }
 
 });

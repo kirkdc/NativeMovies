@@ -12,8 +12,6 @@ today = yyyy + "-" + mm + "-" + dd
     const response = await axios.get(
       'https://api.themoviedb.org/3/trending/all/week?api_key=4c53c4a41e79851aed7a70a5c9e19e9a',
     );
-    console.log(response, "fetchMovies redux/actions/index.js");
-
     dispatch({type: 'FETCH_MOVIES', payload: response.data.results});
   };
 
@@ -24,8 +22,6 @@ today = yyyy + "-" + mm + "-" + dd
         params: {query: term},
       }
     );
-    console.log(response, 'searchMovies redux/actions/index.js');
-
     dispatch({type: 'SEARCH_MOVIES', payload: response.data.results});
   };
 
@@ -34,18 +30,14 @@ export const showingNow = () => async (dispatch) => {
   const response = await axios.get(
     'https://api.themoviedb.org/3/discover/movie?api_key=4c53c4a41e79851aed7a70a5c9e19e9a&primary_release_date.gte=' + today + '&primary_release_date.lte=' + today,
   );
-  console.log(response,  "showingNow redux/actions/index.js");
-
   dispatch({type: 'SHOWING_NOW', payload: response.data.results});
 };
 
 export const movieByGenre = (genreType) => async (dispatch) => {
   dispatch({type: 'MOVIE_GENRE_REQ'})
-  console.log(genreType, "from actions/index.js")
   const response = await axios.get(
     'https://api.themoviedb.org/3/discover/movie?api_key=4c53c4a41e79851aed7a70a5c9e19e9a&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=' + genreType
   );
-  console.log(response,  "movieByGenre redux/actions/index.js");
 
   dispatch({type: 'MOVIE_GENRE_SUCCESS', payload: response.data.results});
 };

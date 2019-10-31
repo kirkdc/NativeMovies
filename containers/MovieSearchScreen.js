@@ -27,7 +27,6 @@ class MovieSearchScreen extends Component {
   };
 
   render() {
-    console.log(this.props.userSearchResults, 'movieSearchScreen.js');
     const data = this.props.userSearchResults;
 
     return (
