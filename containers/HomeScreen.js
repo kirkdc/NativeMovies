@@ -30,7 +30,6 @@ class HomeScreen extends Component {
   }
 
   onSeeMore = (type) => {
-    console.log(this.props)
     const {navigation} = this.props;
    navigation.navigate('TopRated', {
       movieId: "null",
@@ -39,7 +38,6 @@ class HomeScreen extends Component {
   };
 
   componentDidMount = () => {
-    console.log(this.props, 'Home Screen - ComponentDidMount');
     this.props.fetchMovies();
     this.props.showingNow();
   };
@@ -48,8 +46,6 @@ class HomeScreen extends Component {
     const {isLoading} = this.state;
     const data = this.props.trendingMovies;
     const nowPlaying = this.props.showingMovies;
-    console.log(this.props.trendingMovies, 'render trending');
-    console.log(this.props.showingMovies, 'render showing');
 
     return (
       <SafeAreaView style={styles.safeAreaView}>

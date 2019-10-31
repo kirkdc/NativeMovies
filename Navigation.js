@@ -34,6 +34,7 @@ const Tabs = createMaterialTopTabNavigator(
     },
   },
   {
+    lazy: true,
     navigationOptions: {
       title: 'The Movie DataBase',
       headerStyle: {

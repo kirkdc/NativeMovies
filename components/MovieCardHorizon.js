@@ -6,11 +6,12 @@ import {
   StyleSheet,
   Text,
   ImageBackground,
+  Button,
 } from 'react-native';
 import {MOVIE_CARD_IMG} from '../config';
-
-import {movieByGenre} from '../Redux/actions';
+import {movieByGenre, addFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const genres = [
   {
@@ -99,8 +100,8 @@ class MovieCardHorizon extends Component {
     };
   }
 
-   onClickItem = () => {
-     let movie = this.props.movie
+  onClickItem = () => {
+    let movie = this.props.movie;
     console.log(movie, 'from MovieCardHo');
     this.props.navigation.navigate('MoviesDetail', {
       movieId: movie.id,
@@ -110,15 +111,21 @@ class MovieCardHorizon extends Component {
     });
   };
 
-   onClickTab = id => {
+  onClickTab = tag => {
     this.props.navigation.navigate('TopGenre', {
-      genre: 'genre details here',
+      genre: tag,
     });
-    this.props.movieByGenre(id);
+    this.props.movieByGenre(tag.id);
+  };
+
+  onClickFavourites = movie => {
+    // console.log(movie);
+    this.props.addFavourite(movie);
+    console.log(this.props.favourites, "props from MovieCardHorizon")
   };
 
   getFilteredGenres = genreIds => {
-     let filteredGenres = [];
+    let filteredGenres = [];
     genreIds.forEach(id => {
       genres.forEach(genre => {
         if (genre.id === id) {
@@ -135,162 +142,75 @@ class MovieCardHorizon extends Component {
 
   render() {
     // console.log(this.props.topInGenreProp, "reducer props from MovieCardHorizon");
+    let movie = this.props.movie;
+    return (
+      <View style={styles.movieCardHo} key={movie.id}>
+        <ImageBackground
+          source={{
+            uri: 'https://image.tmdb.org/t/p/original' + movie.backdrop_path,
+          }}
+          style={{width: '100%', height: '100%'}}>
+          <View style={styles.overlay}>
+            <TouchableOpacity activeOpacity={0.6} onPress={this.onClickItem}>
+              <Image
+                style={styles.imageStyle}
+                resizeMode="contain"
+                source={{
+                  // uri:'https://image.tmdb.org/t/p/w200' + movie.poster_path
+                  uri:
+                    movie.poster_path == null
+                      ? 'https://www.accessdisplays.co.uk/wp-content/uploads/2019/04/no-image.png'
+                      : `https://image.tmdb.org/t/p/w${MOVIE_CARD_IMG.width}${movie.poster_path}`,
+                }}
+              />
+            </TouchableOpacity>
 
-    let movie = this.props.movie
-    return <View style={styles.movieCardHo} key={movie.id}>
-    <ImageBackground
-      source={{
-        uri: 'https://image.tmdb.org/t/p/original' + movie.backdrop_path,
-      }}
-      style={{width: '100%', height: '100%'}}>
-      <View style={styles.overlay}>
-        <TouchableOpacity activeOpacity={0.6} onPress={this.onClickItem}>
-          <Image
-            style={styles.imageStyle}
-            resizeMode="contain"
-            source={{
-              // uri:'https://image.tmdb.org/t/p/w200' + movie.poster_path
-              uri:
-                movie.poster_path == null
-                  ? 'https://www.accessdisplays.co.uk/wp-content/uploads/2019/04/no-image.png'
-                  : `https://image.tmdb.org/t/p/w${MOVIE_CARD_IMG.width}${movie.poster_path}`,
-            }}
-          />
-        </TouchableOpacity>
-
-        <View style={styles.detailContainer}>
-          <Text style={styles.movieName}>
-            {movie.original_title || movie.name}
-          </Text>
-          <View style={styles.tagContainer}>
-            {movie.genre_ids.length > 0 ? (
-              this.getFilteredGenres(movie.genre_ids).map(tag => {
-                return (
-                  <TouchableOpacity
-                    key={tag.id}
-                    style={styles.tag}
-                    // onPress={this.onClickTab}>
-                    onPress={() => this.onClickTab(tag.id)}>
-                    <Text style={styles.tagText}> {tag.name} </Text>
-                  </TouchableOpacity>
-                );
-              })
-            ) : (
-              <Text> No Tags</Text>
-            )}
+            <View style={styles.detailContainer}>
+              <Text style={styles.movieName}>
+                {movie.original_title || movie.name}
+              </Text>
+              <View style={styles.tagContainer}>
+                {movie.genre_ids.length > 0 ? (
+                  this.getFilteredGenres(movie.genre_ids).map(tag => {
+                    return (
+                      <TouchableOpacity
+                        key={tag.id}
+                        style={styles.tag}
+                        onPress={() => this.onClickTab(tag)}>
+                        <Text style={styles.tagText}> {tag.name} </Text>
+                      </TouchableOpacity>
+                    );
+                  })
+                ) : (
+                  <Text> No Tags</Text>
+                )}
+              </View>
+              <View style={styles.favContainer}>
+                <Icon.Button name="heart" size={20} color="red" backgroundColor="pink" onPress={() => this.onClickFavourites(movie)}>
+                  <Text style={{fontFamily: 'Arial', fontSize: 15}}>
+                    Add to Favourites
+                  </Text>
+                </Icon.Button>
+              </View>
+            </View>
           </View>
-        </View>
+        </ImageBackground>
       </View>
-    </ImageBackground>
-  </View>;
+    );
   }
 }
-
 
 const mapStateToProps = state => {
   return {
     topInGenreProp: state.topInGenre,
+    favourites: state.addToFavourites
   };
 };
 
 export default connect(
   mapStateToProps,
-  {movieByGenre},
+  {movieByGenre, addFavourite},
 )(MovieCardHorizon);
-
-
-//====================================================================================
-// OLD FUNCTIONAL COMPONENT
-//====================================================================================
-
-// const MovieCardHorizon = props => {
-//   const {movie, navigation} = props;
-
-//   let onClickItem = () => {
-//     console.log(movie, 'from MovieCardHo');
-//     navigation.navigate('MoviesDetail', {
-//       movieId: movie.id,
-//       movieTitle: movie.original_title,
-//       movieDesc: movie.overview,
-//       movieBack: movie.backdrop_path,
-//     });
-//   };
-
-//   let onClickTab = () => {
-//     navigation.navigate('TopGenre', {
-//       genre: 'genre details here',
-//     });
-//   };
-
-//   getFilteredGenres = genreIds => {
-//     let filteredGenres = [];
-//     genreIds.forEach(id => {
-//       genres.forEach(genre => {
-//         if (genre.id === id) {
-//           filteredGenres.push(genre);
-//         }
-//       });
-//     });
-//     return filteredGenres;
-//   };
-
-//   getTagName = id => {
-//     return genres.filter(genre => genre.id === id);
-//   };
-
-//   return (
-//     <View style={styles.movieCardHo} key={movie.id}>
-//       <ImageBackground
-//         source={{
-//           uri: 'https://image.tmdb.org/t/p/original' + movie.backdrop_path,
-//         }}
-//         style={{width: '100%', height: '100%'}}>
-//         <View style={styles.overlay}>
-//           <TouchableOpacity activeOpacity={0.6} onPress={onClickItem}>
-//             <Image
-//               style={styles.imageStyle}
-//               resizeMode="contain"
-//               source={{
-//                 // uri:'https://image.tmdb.org/t/p/w200' + movie.poster_path
-//                 uri:
-//                   movie.poster_path == null
-//                     ? 'https://www.accessdisplays.co.uk/wp-content/uploads/2019/04/no-image.png'
-//                     : `https://image.tmdb.org/t/p/w${MOVIE_CARD_IMG.width}${movie.poster_path}`,
-//               }}
-//             />
-//           </TouchableOpacity>
-
-//           <View style={styles.detailContainer}>
-//             <Text style={styles.movieName}>
-//               {movie.original_title || movie.name}
-//             </Text>
-//             <View style={styles.tagContainer}>
-//               {movie.genre_ids.length > 0 ? (
-//                 this.getFilteredGenres(movie.genre_ids).map(tag => {
-//                   return (
-//                     <TouchableOpacity
-//                       key={tag.id}
-//                       style={styles.tag}
-//                       onPress={onClickTab}>
-//                       <Text style={styles.tagText}> {tag.name} </Text>
-//                     </TouchableOpacity>
-//                   );
-//                 })
-//               ) : (
-//                 <Text> No Tags</Text>
-//               )}
-//             </View>
-//           </View>
-//         </View>
-//       </ImageBackground>
-//     </View>
-//   );
-// };
-
-// export default MovieCardHorizon;
-//====================================================================================
-// OLD FUNCTIONAL COMPONENT
-//====================================================================================
 
 const styles = StyleSheet.create({
   movieName: {
@@ -344,4 +264,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  favContainer: {
+    flex: 1,
+    justifyContent: 'flex-end'
+  }
 });

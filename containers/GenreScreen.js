@@ -14,6 +14,12 @@ import {movieByGenre} from '../Redux/actions';
 import {connect} from 'react-redux';
 
 class GenreScreen extends Component {
+  static navigationOptions = ({ navigation }) => {
+    console.log(navigation);
+    return {
+      title: `${navigation.state.params.genre.name} Movies`,
+    };
+  };
   constructor(props) {
     super(props);
   }
