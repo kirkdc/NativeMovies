@@ -6,43 +6,30 @@ import {
   Button,
   Image,
   ScrollView,
-  TextInput,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-
-import {searchMovies} from '../Redux/actions';
-import {connect} from 'react-redux';
-// import MovieCard from '../components/MovieCard';
 import MovieCardHorizon from '../components/MovieCardHorizon';
-import {whileStatement} from '@babel/types';
+import {movieByGenre} from '../Redux/actions';
+import {connect} from 'react-redux';
 
-class MovieSearchScreen extends Component {
+class GenreScreen extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: `${navigation.state.params.genre.name} Movies`,
+    };
+  };
   constructor(props) {
     super(props);
-    this.state = {userInput: '', data: []};
   }
 
-  handleSubmit = () => {
-    this.props.searchMovies(this.state.userInput);
-  };
+  get data(){
+    return this.props.topInGenre;
+  }
 
   render() {
-    const data = this.props.userSearchResults;
-
+    const data = this.data;
     return (
-      <SafeAreaView style={styles.safeAreaView}>
-        <View style={styles.mainContainer}>
-
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputBox}
-              placeholderTextColor="grey"
-              placeholder="Find your favourite movies"
-              onChangeText={userInput => this.setState({userInput})}
-              value={this.state.userInput}
-            />
-            <Button title={'Search'} onPress={this.handleSubmit} />
-          </View>
           <ScrollView style={styles.container}>
             <View style={styles.movieContainer}>
               {data.length > 0 ? (
@@ -64,64 +51,52 @@ class MovieSearchScreen extends Component {
               )}
             </View>
           </ScrollView>
-        </View>
-      </SafeAreaView>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    userSearchResults: state.searchMovies,
+    topInGenre: state.topInGenre,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {searchMovies},
-)(MovieSearchScreen);
+  {movieByGenre},
+)(GenreScreen);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgb(30, 30, 30)',
   },
-  mainContainer: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-  inputContainer: {
-    padding: 8
-  },
-  inputBox: {
-    height: 40,
-    backgroundColor: 'rgb(38, 38, 38)',
-    color: 'white',
-    borderColor: 'yellow',
-  },
-  safeAreaView: {
-    flex: 1,
+  movieName: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerContainer: {
+    flexDirection: 'row',
     backgroundColor: 'rgb(13, 13, 13)',
-    alignItems: 'center',
+    // marginTop: 30,
   },
   headerText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 22,
     alignItems: 'flex-start',
-    marginLeft: '4%',
-    padding: 10,
+    marginLeft: "4%",
   },
   movieContainer: {
     paddingTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  errorText: {
-    marginTop: '30%',
-    fontSize: 20,
-    textAlign: 'center',
-    lineHeight: 35,
+  safeAreaView: {
+    flex: 1,
   },
 });
