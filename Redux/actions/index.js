@@ -42,8 +42,14 @@ export const movieByGenre = (genreType) => async (dispatch) => {
   dispatch({type: 'MOVIE_GENRE_SUCCESS', payload: response.data.results});
 };
 
-  // https://api.themoviedb.org/3/discover/movie?api_key=4c53c4a41e79851aed7a70a5c9e19e9a&primary_release_date.gte=2018-10-10&primary_release_date.lte=2018-10-23
+  // export const addFavourite = (movie) => (dispatch) => {
+  //   dispatch({type: 'ADD_TO_FAVS', payload: movie});
+  // };
 
-  export const addFavourite = (movie) => (dispatch) => {
-    dispatch({type: 'ADD_TO_FAVS', payload: movie});
+  export const saveMovies = (save) => (dispatch) => {
+    dispatch({type: 'SAVE_MOVIES'});
+  };
+
+  export const fetchMovies = (fetch) => (dispatch) => {
+    dispatch({type: 'FETCH_MOVIES'});
   };

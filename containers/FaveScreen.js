@@ -11,20 +11,36 @@ import {
 } from 'react-native';
 
 import MovieCardHorizon from '../components/MovieCardHorizon';
-import {addFavourite} from '../Redux/actions';
+import {saveMovies, fetchMovies} from '../Redux/actions';
 import {connect} from 'react-redux';
+import {AsyncStorage} from 'react-native';
 
 class FaveScreen extends Component {
   constructor(props) {
     super(props);
   }
+  componentDidUpdate(prevProps) {
+    if (this.props.state !== prevProps.state) {
+      this.props.saveMovies();
+      this.props.saveMovies();
+    }
+   }
 
   get data() {
     return this.props.favourites;
   }
 
+  _storeData = async (data) => {
+    try {
+      await AsyncStorage.setItem('data', data);
+    } catch (error) {
+     console.log(error.message)
+    }
+  };
+
+
   render() {
-    const data = this.props.favourites;
+    const data = this.props.fetchMovies;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.movieContainer}>
@@ -52,7 +68,8 @@ class FaveScreen extends Component {
 }
 const mapStateToProps = state => {
   return {
-    favourites: state.addToFavourites,
+    saveMovies: state.saveMovies,
+    fetchMovies: state.fetchMovies,
   };
 };
 
