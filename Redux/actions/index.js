@@ -46,4 +46,10 @@ export const movieByGenre = (genreType) => async (dispatch) => {
 
   export const addFavourite = (movie) => (dispatch) => {
     dispatch({type: 'ADD_TO_FAVS', payload: movie});
+    console.log(movie, 'from actions/index.js');
+  };
+
+  export const fetchFavourites = () => (dispatch) => {
+    console.log('from actions/index.js FETCH_FAVS');
+    dispatch({type: 'FETCH_FAVS'});
   };

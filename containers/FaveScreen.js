@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
+import { eventEmitter, eventTypes } from '../Events';
 
 import MovieCardHorizon from '../components/MovieCardHorizon';
-import {addFavourite} from '../Redux/actions';
+import {addFavourite, fetchFavourites} from '../Redux/actions';
 import {connect} from 'react-redux';
 
 class FaveScreen extends Component {
@@ -19,12 +20,30 @@ class FaveScreen extends Component {
     super(props);
   }
 
+ componentDidMount() {
+   console.log(this.props);
+   eventEmitter.addListener(eventTypes.FETCH_FAVS, () => {
+     console.log('event called');
+     this.props.fetchFavourites();
+   });
+  //  this.props.fetchFavourites();
+ }
+
+ componentDidUpdate(props) {
+  console.log(props, this.props, "componentDidUpdate");
+ }
+
+ shouldComponentUpdate(props) {
+  console.log(props, "shouldComponentUpdate");
+ }
+
   get data() {
     return this.props.favourites;
   }
 
   render() {
     const data = this.props.favourites;
+    console.log(data, "from FaveScreen.js");
     return (
       <ScrollView style={styles.container}>
         <View style={styles.movieContainer}>
@@ -51,14 +70,15 @@ class FaveScreen extends Component {
   }
 }
 const mapStateToProps = state => {
+  console.log(state, "mapStateToProps");
   return {
-    favourites: state.addToFavourites,
+    favourites: state.addToFavourites.favourites.favouriteMovies,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {addFavourite},
+  {addFavourite, fetchFavourites},
 )(FaveScreen);
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
-
+import { eventEmitter, eventTypes } from './Events';
 import HomeScreen from './containers/HomeScreen';
 import MovieSearchScreen from './containers/MovieSearchScreen';
 import FaveScreen from './containers/FaveScreen';
@@ -31,6 +31,12 @@ const Tabs = createMaterialTopTabNavigator(
     },
     Favourites: {
       screen: FaveScreen,
+      navigationOptions: {
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          eventEmitter.emit(eventTypes.FETCH_FAVS);
+          defaultHandler();
+        },
+      },
     },
   },
   {
@@ -90,9 +96,6 @@ const AppStackNavigation = createStackNavigator(
         backgroundColor: 'green',
         color: '#fff'
       },
-      navigationOptions: (props) => {
-
-      }
     },
   },
 );

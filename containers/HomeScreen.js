@@ -38,6 +38,7 @@ class HomeScreen extends Component {
   };
 
   componentDidMount = () => {
+    console.log(this.props);
     this.props.fetchMovies();
     this.props.showingNow();
   };
