@@ -12,6 +12,7 @@ import {MOVIE_CARD_IMG} from '../config';
 import {movieByGenre, addFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { writeAndReadFromLdb } from '../utils';
 
 const genres = [
   {
@@ -100,8 +101,11 @@ class MovieCardHorizon extends Component {
     };
   }
 
-  onClickItem = () => {
+
+  onClickItem = async () => {
     let movie = this.props.movie;
+    await writeAndReadFromLdb("user_actions", `${movie.original_title}_CLICKED`);
+
     this.props.navigation.navigate('MoviesDetail', {
       movieId: movie.id,
       movieTitle: movie.original_title,

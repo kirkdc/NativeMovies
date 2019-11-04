@@ -12,6 +12,8 @@ import {
 import {fetchMovies, showingNow} from '../Redux/actions';
 import {connect} from 'react-redux';
 import MovieCard from '../components/MovieCard';
+import { writeAndReadFromLdb } from  '../utils';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const apiKey = '4c53c4a41e79851aed7a70a5c9e19e9a';
 const TrendingUriWeek =
@@ -29,7 +31,9 @@ class HomeScreen extends Component {
     };
   }
 
-  onSeeMore = (type) => {
+  onSeeMore = async (type) => {
+    const userActions = await writeAndReadFromLdb('user_actions', `${type}_SEEMORE_CLICKED`);
+    console.log(userActions);
     const {navigation} = this.props;
    navigation.navigate('TopRated', {
       movieId: "null",
