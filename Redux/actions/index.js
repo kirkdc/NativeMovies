@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { writeAndReadFromLdb, readFromLdb } from '../../utils';
+import { writeAndReadFromLdb, readFromLdb, removeFromLdb } from '../../utils';
 
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, '0');
@@ -48,11 +48,13 @@ export const movieByGenre = genreType => async dispatch => {
 export const addFavourite = movie => async dispatch => {
   console.log('Initial - start');
   const favMoviesInsideAS = await writeAndReadFromLdb('favourite_movies', movie);
-
-
-
   dispatch({type: 'ADD_TO_FAVS', payload: JSON.parse(favMoviesInsideAS)});
 };
+
+export const removeFavourite = movie => async dispatch => {
+  const deletedMovies = await removeFromLdb('favourite_movies', movie);
+  dispatch({type:'REMOVE_FAV', payload: deletedMovies})
+}
 
 // export const rejectMovie = movie => async dispatch => {
 //   console.log('Initial - start');

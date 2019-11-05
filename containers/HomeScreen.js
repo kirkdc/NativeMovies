@@ -44,6 +44,7 @@ class HomeScreen extends Component {
   componentDidMount = () => {
     this.props.fetchMovies();
     this.props.showingNow();
+    // AsyncStorage.clear();
   };
 
   render() {

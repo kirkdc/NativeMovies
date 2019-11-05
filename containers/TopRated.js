@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import {fetchMovies} from '../Redux/actions';
+import {fetchMovies, addFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
 // import MovieCard from '../components/MovieCard';
 import MovieCardHorizon from '../components/MovieCardHorizon';
@@ -42,9 +42,19 @@ class TopRatedScreen extends Component {
   }
 
 
+
+//get all the ids of the movies from here by connecting it with favourites
+//mapstatetoprops favourites
+//use  []array.includes[] to compare files
+//disable the button inside the moviecardhorizon by checking if the id matches the favourites
+//map to get ids in the string format  something.map(item => item.id)
+
   render() {
     const {isLoading} = this.state;
     const data = this.data;
+    const favouritesIdList = this.props.favourites;
+    console.log(favouritesIdList, "fav list  toprated");
+
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <ScrollView style={styles.container}>
@@ -74,12 +84,13 @@ const mapStateToProps = state => {
   return {
     trendingMovies: state.trendingMovies,
     showingMovies: state.showingMovies,
+    favourites: state.addToFavourites
   };
 };
 
 export default connect(
   mapStateToProps,
-  {fetchMovies},
+  {fetchMovies, addFavourite},
 )(TopRatedScreen);
 
 const styles = StyleSheet.create({

@@ -26,33 +26,26 @@ class FaveScreen extends Component {
    }
 
    componentDidMount() {
-    this.props.getMovies();     
+    this.props.getMovies(); 
    }
 
    get data() {
     return this.props.favourites;
   }
 
-  // _storeData = async (data) => {
-  //   try {
-  //     await AsyncStorage.setItem('data', data);
-  //   } catch (error) {
-  //    console.log(error.message)
-  //   }
-  // };
-
   render() {
     const data = this.props.favourites;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.movieContainer}>
-          {data.length > 0 ? (
+          { data && Array.isArray(data) && data.length > 0 ? (
             data.map(movie => {
               return (
                 <MovieCardHorizon
                   key={movie.id}
                   navigation={this.props.navigation}
                   movie={movie}
+                  source={"FAV_SCREEN"}
                 />
               );
             })

@@ -23,3 +23,14 @@ export const readFromLdb = async (ldbKey) => {
   const existingArrayLDB = await AsyncStorage.getItem(ldbKey);
   return JSON.parse(existingArrayLDB);
 }
+
+export const removeFromLdb = async (ldbKey, data) => {
+  //getting data from async storage
+  const existingLDBData = await AsyncStorage.getItem(ldbKey);
+  const existingArrayLDB = JSON.parse(existingLDBData);
+
+  const removeItemIndex = existingArrayLDB.findIndex(val => val.id === data.id);
+  existingArrayLDB.splice(removeItemIndex, 1);
+  await AsyncStorage.setItem(ldbKey, JSON.stringify(existingArrayLDB));
+  return existingArrayLDB;
+}

@@ -9,10 +9,10 @@ import {
   Button,
 } from 'react-native';
 import {MOVIE_CARD_IMG} from '../config';
-import {movieByGenre, addFavourite} from '../Redux/actions';
+import {movieByGenre, addFavourite, removeFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { writeAndReadFromLdb } from '../utils';
+import { writeAndReadFromLdb, removeFromLdb } from '../utils';
 
 const genres = [
   {
@@ -93,6 +93,7 @@ const genres = [
   },
 ];
 
+
 class MovieCardHorizon extends Component {
   constructor(props) {
     super(props);
@@ -125,6 +126,10 @@ class MovieCardHorizon extends Component {
     this.props.addFavourite(movie);
   };
 
+  onClickDelete = async(movie) => {
+    this.props.removeFavourite(movie);
+  }
+
   getFilteredGenres = genreIds => {
     let filteredGenres = [];
     genreIds.forEach(id => {
@@ -140,6 +145,10 @@ class MovieCardHorizon extends Component {
   getTagName = id => {
     return genres.filter(genre => genre.id === id);
   };
+
+  get fromFavouriteScreen() {
+    return this.props.source === 'FAV_SCREEN' || false;
+  }
 
   render() {
     let movie = this.props.movie;
@@ -185,13 +194,24 @@ class MovieCardHorizon extends Component {
                   <Text> No Tags</Text>
                 )}
               </View>
+              {!this.fromFavouriteScreen ? (
               <View style={styles.favContainer}>
-                <Icon.Button name="heart" size={20} color="red" backgroundColor="pink" onPress={() => this.onClickFavourites(movie)}>
+              <Icon.Button name="heart" size={20} color="red" backgroundColor="pink" onPress={() => this.onClickFavourites(movie)}>
+                <Text style={{fontFamily: 'Arial', fontSize: 15}}>
+                  Add to Favourites
+                </Text>
+              </Icon.Button>
+            </View>
+              ) : (
+                <View style={styles.favContainer}>
+                <Icon.Button name="delete" size={20} color="black" backgroundColor="red" onPress={() => this.onClickDelete(movie)}>
                   <Text style={{fontFamily: 'Arial', fontSize: 15}}>
-                    Add to Favourites
+                   Remove
                   </Text>
                 </Icon.Button>
               </View>
+              )}
+
             </View>
           </View>
         </ImageBackground>
@@ -209,7 +229,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {movieByGenre, addFavourite},
+  {movieByGenre, addFavourite, removeFavourite},
 )(MovieCardHorizon);
 
 const styles = StyleSheet.create({
