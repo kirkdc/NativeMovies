@@ -8,7 +8,7 @@ import MovieDetailsScreen from './containers/MovieDetails';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
-import TopRatedScreen from './containers/TopRated';
+import SeeMoreScreen from './containers/SeeMoreScreen';
 import GenreScreen from './containers/GenreScreen';
 
 class Navigation extends Component {
@@ -78,7 +78,7 @@ const AppStackNavigation = createStackNavigator(
       screen: Tabs
     },
     MoviesDetail: {screen: MovieDetailsScreen},
-    TopRated: {screen: TopRatedScreen},
+    SeeMore: {screen: SeeMoreScreen},
     TopGenre: {screen: GenreScreen}
   },
   {

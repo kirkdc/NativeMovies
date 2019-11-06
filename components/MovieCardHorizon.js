@@ -12,7 +12,7 @@ import {MOVIE_CARD_IMG} from '../config';
 import {movieByGenre, addFavourite, removeFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { writeAndReadFromLdb, removeFromLdb } from '../utils';
+import {writeAndReadFromLdb, removeFromLdb} from '../utils';
 
 const genres = [
   {
@@ -93,7 +93,6 @@ const genres = [
   },
 ];
 
-
 class MovieCardHorizon extends Component {
   constructor(props) {
     super(props);
@@ -102,10 +101,12 @@ class MovieCardHorizon extends Component {
     };
   }
 
-
   onClickItem = async () => {
     let movie = this.props.movie;
-    await writeAndReadFromLdb("user_actions", `${movie.original_title}_CLICKED`);
+    await writeAndReadFromLdb(
+      'user_actions',
+      `${movie.original_title}_CLICKED`,
+    );
 
     this.props.navigation.navigate('MoviesDetail', {
       movieId: movie.id,
@@ -126,9 +127,9 @@ class MovieCardHorizon extends Component {
     this.props.addFavourite(movie);
   };
 
-  onClickDelete = async(movie) => {
+  onClickDelete = async movie => {
     this.props.removeFavourite(movie);
-  }
+  };
 
   getFilteredGenres = genreIds => {
     let filteredGenres = [];
@@ -150,8 +151,17 @@ class MovieCardHorizon extends Component {
     return this.props.source === 'FAV_SCREEN' || false;
   }
 
+  get doesItMatch() {
+    let favList = this.props.favList;
+    let movieId = this.props.movie.id;
+
+    return favList.includes(movieId);
+  }
+
   render() {
     let movie = this.props.movie;
+    let favList = this.props.favList;
+
     return (
       <View style={styles.movieCardHo} key={movie.id}>
         <ImageBackground
@@ -165,7 +175,6 @@ class MovieCardHorizon extends Component {
                 style={styles.imageStyle}
                 resizeMode="contain"
                 source={{
-                  // uri:'https://image.tmdb.org/t/p/w200' + movie.poster_path
                   uri:
                     movie.poster_path == null
                       ? 'https://www.accessdisplays.co.uk/wp-content/uploads/2019/04/no-image.png'
@@ -194,24 +203,48 @@ class MovieCardHorizon extends Component {
                   <Text> No Tags</Text>
                 )}
               </View>
+
               {!this.fromFavouriteScreen ? (
-              <View style={styles.favContainer}>
-              <Icon.Button name="heart" size={20} color="red" backgroundColor="pink" onPress={() => this.onClickFavourites(movie)}>
+                <View style={styles.favContainer}>
+
+            {this.doesItMatch ? (
+                <Icon.Button
+                name="heart"
+                size={20}
+                color="grey"
+                backgroundColor="rgb(144, 18, 18)"
+                onPress={() => alert('This movie has already been added to your favourites')}>
+                <Text style={{fontFamily: 'Arial', fontWeight:'bold', fontSize: 15}}>
+                  Added To Favourites
+                </Text>
+              </Icon.Button>
+              ) : (
+                <Icon.Button
+                name="heart"
+                size={20}
+                color="rgb(144, 18, 18)"
+                backgroundColor="rgb(217, 124, 124)"
+                onPress={() => this.onClickFavourites(movie)}>
                 <Text style={{fontFamily: 'Arial', fontSize: 15}}>
                   Add to Favourites
                 </Text>
               </Icon.Button>
-            </View>
+              )}
+                </View>
               ) : (
                 <View style={styles.favContainer}>
-                <Icon.Button name="delete" size={20} color="black" backgroundColor="red" onPress={() => this.onClickDelete(movie)}>
-                  <Text style={{fontFamily: 'Arial', fontSize: 15}}>
-                   Remove
-                  </Text>
-                </Icon.Button>
-              </View>
+                  <Icon.Button
+                    name="delete"
+                    size={20}
+                    color="black"
+                    backgroundColor="rgb(144, 30, 30)"
+                    onPress={() => this.onClickDelete(movie)}>
+                    <Text style={{fontFamily: 'Arial', fontSize: 16}}>
+                      Remove
+                    </Text>
+                  </Icon.Button>
+                </View>
               )}
-
             </View>
           </View>
         </ImageBackground>
@@ -223,7 +256,7 @@ class MovieCardHorizon extends Component {
 const mapStateToProps = state => {
   return {
     topInGenreProp: state.topInGenre,
-    favourites: state.addToFavourites
+    favourites: state.addToFavourites,
   };
 };
 
@@ -286,6 +319,6 @@ const styles = StyleSheet.create({
   },
   favContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 });

@@ -10,11 +10,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import {searchMovies} from '../Redux/actions';
+import {searchMovies, addFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
-// import MovieCard from '../components/MovieCard';
 import MovieCardHorizon from '../components/MovieCardHorizon';
-import {whileStatement} from '@babel/types';
 
 class MovieSearchScreen extends Component {
   constructor(props) {
@@ -26,8 +24,39 @@ class MovieSearchScreen extends Component {
     this.props.searchMovies(this.state.userInput);
   };
 
+
+  get favIds() {
+    let favouritesList = this.props.favourites;
+    let newArray = favouritesList.map(obj => {
+      let nFavList = {};
+      nFavList = obj.id;
+      return nFavList;
+    });
+    return newArray;
+  }
+
+
+  // get favIds() {
+  //   let data = this.props.favourites;
+
+  //   if(data && Array.isArray(data) && data.length > 0 ){
+  //     let newArray = data.map(obj => {
+  //       let nFavList = {};
+  //       nFavList = obj.id;
+  //       return nFavList;
+  //     })
+  //     return newArray;
+  //   } else {
+  //     return;
+  //   }
+
+  // }
+
+
+
   render() {
     const data = this.props.userSearchResults;
+    const favIds = this.favIds;
 
     return (
       <SafeAreaView style={styles.safeAreaView}>
@@ -52,6 +81,7 @@ class MovieSearchScreen extends Component {
                       key={movie.id}
                       navigation={this.props.navigation}
                       movie={movie}
+                      favList={favIds}
                     />
                   );
                 })
@@ -73,12 +103,13 @@ class MovieSearchScreen extends Component {
 const mapStateToProps = state => {
   return {
     userSearchResults: state.searchMovies,
+    favourites: state.addToFavourites,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {searchMovies},
+  {searchMovies, addFavourite},
 )(MovieSearchScreen);
 
 const styles = StyleSheet.create({

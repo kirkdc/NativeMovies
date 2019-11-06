@@ -35,7 +35,7 @@ class HomeScreen extends Component {
     const userActions = await writeAndReadFromLdb('user_actions', `${type}_SEEMORE_CLICKED`);
     console.log(userActions);
     const {navigation} = this.props;
-   navigation.navigate('TopRated', {
+   navigation.navigate('SeeMore', {
       movieId: "null",
       type
     });
@@ -44,7 +44,7 @@ class HomeScreen extends Component {
   componentDidMount = () => {
     this.props.fetchMovies();
     this.props.showingNow();
-    // AsyncStorage.clear();
+    AsyncStorage.clear();
   };
 
   render() {

@@ -26,7 +26,7 @@ class FaveScreen extends Component {
    }
 
    componentDidMount() {
-    this.props.getMovies(); 
+    this.props.getMovies();
    }
 
    get data() {
@@ -34,6 +34,7 @@ class FaveScreen extends Component {
   }
 
   render() {
+    console.log(this.props);
     const data = this.props.favourites;
     return (
       <ScrollView style={styles.container}>
@@ -46,6 +47,7 @@ class FaveScreen extends Component {
                   navigation={this.props.navigation}
                   movie={movie}
                   source={"FAV_SCREEN"}
+                  favList={[1, 2, 3, "please ignore me"]}
                 />
               );
             })

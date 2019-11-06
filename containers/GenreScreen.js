@@ -10,7 +10,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import MovieCardHorizon from '../components/MovieCardHorizon';
-import {movieByGenre} from '../Redux/actions';
+import {movieByGenre, addFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
 
 class GenreScreen extends Component {
@@ -27,8 +27,21 @@ class GenreScreen extends Component {
     return this.props.topInGenre;
   }
 
+  get favIds() {
+    let favouritesList = this.props.favourites;
+    let newArray = favouritesList.map(obj => {
+      let nFavList = {};
+      nFavList = obj.id;
+      return nFavList;
+    });
+
+    return newArray;
+  }
+
   render() {
     const data = this.data;
+    const favIds = this.favIds;
+
     return (
           <ScrollView style={styles.container}>
             <View style={styles.movieContainer}>
@@ -39,6 +52,7 @@ class GenreScreen extends Component {
                       key={movie.id}
                       navigation={this.props.navigation}
                       movie={movie}
+                      favList={favIds}
                     />
                   );
                 })
@@ -58,12 +72,13 @@ class GenreScreen extends Component {
 const mapStateToProps = state => {
   return {
     topInGenre: state.topInGenre,
+    favourites: state.addToFavourites,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {movieByGenre},
+  {movieByGenre, addFavourite},
 )(GenreScreen);
 
 const styles = StyleSheet.create({

@@ -21,10 +21,13 @@ const TrendingUriDay = 'https://api.themoviedb.org/3/trending/all/day?api_key=';
 
 const posterUri = 'https://image.tmdb.org/t/p/w200';
 
-class TopRatedScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
+class SeeMoreScreen extends Component {
+  static navigationOptions = ({navigation}) => {
     return {
-      title: navigation.state.params.type === 'TOP_RATED' ? 'Top Rated Movies this Week' : 'Now showing Movies',
+      title:
+        navigation.state.params.type === 'TOP_RATED'
+          ? 'Top Rated Movies this Week'
+          : 'Now showing Movies',
     };
   };
   constructor(props) {
@@ -38,27 +41,31 @@ class TopRatedScreen extends Component {
   }
 
   get data() {
-    return this.navProps.type === 'TOP_RATED' ? this.props.trendingMovies : this.props.showingMovies;
+    return this.navProps.type === 'TOP_RATED'
+      ? this.props.trendingMovies
+      : this.props.showingMovies;
+
+
+  }
+
+   get favIds() {
+    let favouritesList = this.props.favourites;
+    let newArray = favouritesList.map(obj => {
+      let nFavList = {};
+      nFavList = obj.id;
+      return nFavList;
+    });
+    return newArray;
   }
 
 
-
-//get all the ids of the movies from here by connecting it with favourites
-//mapstatetoprops favourites
-//use  []array.includes[] to compare files
-//disable the button inside the moviecardhorizon by checking if the id matches the favourites
-//map to get ids in the string format  something.map(item => item.id)
-
   render() {
-    const {isLoading} = this.state;
     const data = this.data;
-    const favouritesIdList = this.props.favourites;
-    console.log(favouritesIdList, "fav list  toprated");
+    const favIds = this.favIds;
 
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <ScrollView style={styles.container}>
-
           <View style={styles.movieContainer}>
             {data.length > 0 ? (
               data.map(movie => {
@@ -67,6 +74,7 @@ class TopRatedScreen extends Component {
                     key={movie.id}
                     navigation={this.props.navigation}
                     movie={movie}
+                    favList={favIds}
                   />
                 );
               })
@@ -84,14 +92,14 @@ const mapStateToProps = state => {
   return {
     trendingMovies: state.trendingMovies,
     showingMovies: state.showingMovies,
-    favourites: state.addToFavourites
+    favourites: state.addToFavourites,
   };
 };
 
 export default connect(
   mapStateToProps,
   {fetchMovies, addFavourite},
-)(TopRatedScreen);
+)(SeeMoreScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -116,7 +124,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22,
     alignItems: 'flex-start',
-    marginLeft: "4%",
+    marginLeft: '4%',
   },
   movieContainer: {
     paddingTop: 20,
