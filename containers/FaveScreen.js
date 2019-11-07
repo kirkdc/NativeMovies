@@ -34,7 +34,6 @@ class FaveScreen extends Component {
   }
 
   render() {
-    console.log(this.props);
     const data = this.props.favourites;
     return (
       <ScrollView style={styles.container}>

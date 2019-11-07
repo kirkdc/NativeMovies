@@ -56,12 +56,6 @@ export const removeFavourite = movie => async dispatch => {
   dispatch({type:'REMOVE_FAV', payload: deletedMovies})
 }
 
-// export const rejectMovie = movie => async dispatch => {
-//   console.log('Initial - start');
-//   const rejectedMoviesInsideAS = await writeAndReadFromLdb('reject_movies', movie);
-//   dispatch({type: 'REJECT_MOVIES', payload: JSON.parse(rejectedMoviesInsideAS)});
-// };
-
 export const saveMovies = save => async dispatch => {
   //  await AsyncStorage.setItem('favourite_movies', "Coolest Movie Evar! REPLACE ME");
   dispatch({type: 'SAVE_MOVIES', payload: save});

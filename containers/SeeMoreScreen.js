@@ -56,6 +56,7 @@ class SeeMoreScreen extends Component {
     const data = this.data;
     const favIds = this.favIds;
 
+    console.log(data);
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <ScrollView style={styles.container}>

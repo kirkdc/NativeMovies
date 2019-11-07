@@ -208,8 +208,19 @@ class MovieCardHorizon extends Component {
                     );
                   })
                 ) : (
-                  <Text> No Tags</Text>
+                  <TouchableOpacity>
+                  <Text style={styles.tag}> No Tags Avaliable </Text>
+                </TouchableOpacity>
                 )}
+              </View>
+
+              <View>
+                <Text style={styles.ratingsContainer}>
+                <Image
+        style={{width: 30, height: 30, marginRight: 30}}
+        source={{uri: 'https://www.themoviedb.org/assets/2/v4/logos/208x226-stacked-green-9484383bd9853615c113f020def5cbe27f6d08a84ff834f41371f223ebad4a3c.png'}}
+      /> Score {movie.vote_average}
+                </Text>
               </View>
 
               {!this.fromFavouriteScreen ? (
@@ -229,10 +240,8 @@ class MovieCardHorizon extends Component {
                               text: 'Go To Favourites',
                               onPress: () => this.props.navigation.navigate('Favourites'),
                               style: 'cancel',
-
-
                             },
-                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                            {text: 'OK'},
                           ],
                           {cancelable: false},
                         )
@@ -349,4 +358,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
+  ratingsContainer: {
+    flex: 1,
+    margin: 3,
+    marginLeft: 8,
+    flexDirection: 'column',
+    justifyContent:'center',
+    color: "rgb(1, 210, 119)",
+    height: 50,
+    fontSize: 16
+  }
 });
