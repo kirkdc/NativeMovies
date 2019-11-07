@@ -12,7 +12,7 @@ import {
 import {fetchMovies, showingNow} from '../Redux/actions';
 import {connect} from 'react-redux';
 import MovieCard from '../components/MovieCard';
-import { writeAndReadFromLdb } from  '../utils';
+import {writeAndReadFromLdb} from '../utils';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const apiKey = '4c53c4a41e79851aed7a70a5c9e19e9a';
@@ -31,20 +31,22 @@ class HomeScreen extends Component {
     };
   }
 
-  onSeeMore = async (type) => {
-    const userActions = await writeAndReadFromLdb('user_actions', `${type}_SEEMORE_CLICKED`);
-    console.log(userActions);
+  onSeeMore = async type => {
+    const userActions = await writeAndReadFromLdb(
+      'user_actions',
+      `${type}_SEEMORE_CLICKED`,
+    );
     const {navigation} = this.props;
-   navigation.navigate('SeeMore', {
-      movieId: "null",
-      type
+    navigation.navigate('SeeMore', {
+      movieId: 'null',
+      type,
     });
   };
 
   componentDidMount = () => {
     this.props.fetchMovies();
     this.props.showingNow();
-    AsyncStorage.clear();
+    // AsyncStorage.clear();
   };
 
   render() {
@@ -57,10 +59,10 @@ class HomeScreen extends Component {
         <View style={styles.mainContainer}>
           <ScrollView>
             <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>
-                Top Rated Movies
-              </Text>
-              <TouchableOpacity style={styles.button} onPress={() => this.onSeeMore('TOP_RATED')}>
+              <Text style={styles.headerText}>Top Rated Movies</Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.onSeeMore('TOP_RATED')}>
                 <Text style={styles.buttonText}> See More </Text>
               </TouchableOpacity>
             </View>
@@ -85,7 +87,9 @@ class HomeScreen extends Component {
 
             <View style={styles.headerContainer}>
               <Text style={styles.headerText}> New Releases </Text>
-              <TouchableOpacity style={styles.button} onPress={() => this.onSeeMore('NOW_PLAYING')}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.onSeeMore('NOW_PLAYING')}>
                 <Text style={styles.buttonText}> See More </Text>
               </TouchableOpacity>
             </View>
@@ -152,18 +156,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22,
     alignItems: 'flex-start',
-    marginLeft: "4%",
+    marginLeft: '4%',
   },
   button: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     padding: 4,
-    marginRight: "4%"
+    marginRight: '4%',
   },
-  buttonText:{
-    color: "rgb(0, 153, 255)",
+  buttonText: {
+    color: 'rgb(0, 153, 255)',
     fontSize: 20,
   },
   movieContainer: {

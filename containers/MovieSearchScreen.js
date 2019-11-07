@@ -24,35 +24,21 @@ class MovieSearchScreen extends Component {
     this.props.searchMovies(this.state.userInput);
   };
 
-
   get favIds() {
     let favouritesList = this.props.favourites;
-    let newArray = favouritesList.map(obj => {
-      let nFavList = {};
-      nFavList = obj.id;
-      return nFavList;
-    });
-    return newArray;
+ //****what is a better way to write this****
+    if (favouritesList === null) {
+      return;
+    } else {
+      let newArray = favouritesList.map(obj => {
+        let nFavList = {};
+        nFavList = obj.id;
+        return nFavList;
+      });
+      return newArray;
+    }
+     //****what is a better way to write this****
   }
-
-
-  // get favIds() {
-  //   let data = this.props.favourites;
-
-  //   if(data && Array.isArray(data) && data.length > 0 ){
-  //     let newArray = data.map(obj => {
-  //       let nFavList = {};
-  //       nFavList = obj.id;
-  //       return nFavList;
-  //     })
-  //     return newArray;
-  //   } else {
-  //     return;
-  //   }
-
-  // }
-
-
 
   render() {
     const data = this.props.userSearchResults;
@@ -61,7 +47,6 @@ class MovieSearchScreen extends Component {
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.mainContainer}>
-
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.inputBox}
@@ -121,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   inputContainer: {
-    padding: 8
+    padding: 8,
   },
   inputBox: {
     height: 40,

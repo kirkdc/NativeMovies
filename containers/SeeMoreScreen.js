@@ -1,17 +1,7 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import {fetchMovies, addFavourite} from '../Redux/actions';
 import {connect} from 'react-redux';
-// import MovieCard from '../components/MovieCard';
 import MovieCardHorizon from '../components/MovieCardHorizon';
 
 const apiKey = '4c53c4a41e79851aed7a70a5c9e19e9a';
@@ -44,20 +34,23 @@ class SeeMoreScreen extends Component {
     return this.navProps.type === 'TOP_RATED'
       ? this.props.trendingMovies
       : this.props.showingMovies;
-
-
   }
 
-   get favIds() {
+  get favIds() {
     let favouritesList = this.props.favourites;
-    let newArray = favouritesList.map(obj => {
-      let nFavList = {};
-      nFavList = obj.id;
-      return nFavList;
-    });
-    return newArray;
+    //****what is a better way to write this****
+    if (favouritesList === null) {
+      return;
+    } else {
+      let newArray = favouritesList.map(obj => {
+        let nFavList = {};
+        nFavList = obj.id;
+        return nFavList;
+      });
+      return newArray;
+    }
+    //****what is a better way to write this****
   }
-
 
   render() {
     const data = this.data;

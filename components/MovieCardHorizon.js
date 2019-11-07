@@ -154,8 +154,13 @@ class MovieCardHorizon extends Component {
   get doesItMatch() {
     let favList = this.props.favList;
     let movieId = this.props.movie.id;
-
-    return favList.includes(movieId);
+    //****what is a better way to write this****
+    if(favList === undefined) {
+      return;
+    } else {
+      return favList.includes(movieId);
+    }
+     //****what is a better way to write this****
   }
 
   render() {
@@ -206,30 +211,38 @@ class MovieCardHorizon extends Component {
 
               {!this.fromFavouriteScreen ? (
                 <View style={styles.favContainer}>
-
-            {this.doesItMatch ? (
-                <Icon.Button
-                name="heart"
-                size={20}
-                color="grey"
-                backgroundColor="rgb(144, 18, 18)"
-                onPress={() => alert('This movie has already been added to your favourites')}>
-                <Text style={{fontFamily: 'Arial', fontWeight:'bold', fontSize: 15}}>
-                  Added To Favourites
-                </Text>
-              </Icon.Button>
-              ) : (
-                <Icon.Button
-                name="heart"
-                size={20}
-                color="rgb(144, 18, 18)"
-                backgroundColor="rgb(217, 124, 124)"
-                onPress={() => this.onClickFavourites(movie)}>
-                <Text style={{fontFamily: 'Arial', fontSize: 15}}>
-                  Add to Favourites
-                </Text>
-              </Icon.Button>
-              )}
+                  {this.doesItMatch ? (
+                    <Icon.Button
+                      name="heart"
+                      size={20}
+                      color="grey"
+                      backgroundColor="rgb(144, 18, 18)"
+                      onPress={() =>
+                        alert(
+                          'This movie has already been added to your favourites',
+                        )
+                      }>
+                      <Text
+                        style={{
+                          fontFamily: 'Arial',
+                          fontWeight: 'bold',
+                          fontSize: 15,
+                        }}>
+                        Added To Favourites
+                      </Text>
+                    </Icon.Button>
+                  ) : (
+                    <Icon.Button
+                      name="heart"
+                      size={20}
+                      color="rgb(144, 18, 18)"
+                      backgroundColor="rgb(217, 124, 124)"
+                      onPress={() => this.onClickFavourites(movie)}>
+                      <Text style={{fontFamily: 'Arial', fontSize: 15}}>
+                        Add to Favourites
+                      </Text>
+                    </Icon.Button>
+                  )}
                 </View>
               ) : (
                 <View style={styles.favContainer}>
