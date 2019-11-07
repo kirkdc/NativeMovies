@@ -7,6 +7,7 @@ import {
   Text,
   ImageBackground,
   Button,
+  Alert
 } from 'react-native';
 import {MOVIE_CARD_IMG} from '../config';
 import {movieByGenre, addFavourite, removeFavourite} from '../Redux/actions';
@@ -163,6 +164,8 @@ class MovieCardHorizon extends Component {
      //****what is a better way to write this****
   }
 
+
+
   render() {
     let movie = this.props.movie;
     let favList = this.props.favList;
@@ -218,8 +221,20 @@ class MovieCardHorizon extends Component {
                       color="grey"
                       backgroundColor="rgb(144, 18, 18)"
                       onPress={() =>
-                        alert(
+                        Alert.alert(
+                          'Movie Added',
                           'This movie has already been added to your favourites',
+                          [
+                            {
+                              text: 'Go To Favourites',
+                              onPress: () => this.props.navigation.navigate('Favourites'),
+                              style: 'cancel',
+
+
+                            },
+                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                          ],
+                          {cancelable: false},
                         )
                       }>
                       <Text
